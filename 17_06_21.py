@@ -33,8 +33,7 @@ def angry_zgodny(angry_pictures):  # warunek angry zgodny, w srodku angry, po bo
     return angry1
 
 
-def angry_niezgodny(angry_pictures,
-                    happy_pictures):  # warunek angry niezgodny, w srodku angry, po bokach happy
+def angry_niezgodny(angry_pictures, happy_pictures):  # warunek angry niezgodny, w srodku angry, po bokach happy
     shuffle(angry_pictures)
     shuffle(happy_pictures)
     center = angry_pictures[0]
@@ -44,8 +43,7 @@ def angry_niezgodny(angry_pictures,
     return angry2
 
 
-def happy_niezgodny(angry_pictures,
-                    happy_pictures):  # warunek happy niezgodny, w srodku happy, po bokach angry
+def happy_niezgodny(angry_pictures, happy_pictures):  # warunek happy niezgodny, w srodku happy, po bokach angry
     shuffle(angry_pictures)
     shuffle(happy_pictures)
     center = happy_pictures[0]
@@ -55,7 +53,7 @@ def happy_niezgodny(angry_pictures,
     return happy2
 
 
-def createBlock():
+def createBlock():  # tworzenie listy z osmioma warunkami, kazdy z 4 podwojnie na koncu liste mieszamy
     block = [happy_zgodny(happy_pictures),
              happy_zgodny(happy_pictures),
              angry_zgodny(angry_pictures),
@@ -68,7 +66,7 @@ def createBlock():
     return block
 
 
-def displaySet(picturesSet):
+def displaySet(picturesSet):  # wyswietlanie blokow
     trial1_center = os.path.abspath(picturesSet[1])
     trial1_left = os.path.abspath(picturesSet[0])
     trial1_right = os.path.abspath(picturesSet[2])
@@ -80,18 +78,22 @@ def displaySet(picturesSet):
     prawy.draw()
     lewy.draw()
     win.flip()
-    core.wait(2)
+    core.wait(1)
+
 
 def breake():
-    img = visual.TextStim(win, text='Przerwa', pos=(0.0, 0.0), color="black")
+    img = visual.TextStim(win, text='Przerwa, aby przejść do następnego bloku naciśnij spacje', pos=(0.0, 0.0), color="black")
     img.draw()
     win.flip()
-    core.wait(4)
+    clicked = event.waitKeys(keyList=['space'])
+    if clicked == ["space"]:
+        core.wait(0)
+    img.draw()
+    win.flip()
 
 
-for i in range(0, 4):
+for i in range(0, 4):  # wyswietlania 4 blokow plus przerwa
     for picturesSet in createBlock():
-        # print(picturesSet)
         displaySet(picturesSet)
     breake()
 
