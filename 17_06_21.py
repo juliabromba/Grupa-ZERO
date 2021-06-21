@@ -82,7 +82,8 @@ def displaySet(picturesSet):  # wyswietlanie blokow
 
 
 def breake():
-    img = visual.TextStim(win, text='Przerwa, aby przejść do następnego bloku naciśnij spacje', pos=(0.0, 0.0), color="black")
+    img = visual.TextStim(win, text='Przerwa, aby przejść do następnego bloku naciśnij spacje', pos=(0.0, 0.0),
+                          color="black")
     img.draw()
     win.flip()
     clicked = event.waitKeys(keyList=['space'])
@@ -92,10 +93,20 @@ def breake():
     win.flip()
 
 
+def end():
+    img = visual.TextStim(win, text='Koniec, dziękujemy za udział w badaniu', pos=(0.0, 0.0),
+                          color="black")
+    img.draw()
+    win.flip()
+    core.wait(4)
+
+
 for i in range(0, 4):  # wyswietlania 4 blokow plus przerwa
     for picturesSet in createBlock():
         displaySet(picturesSet)
     breake()
+
+end()
 
 win.flip()
 win.close()
