@@ -4,6 +4,7 @@ import csv
 import os, sys
 from random import shuffle
 from pathlib import Path
+import codecs
 
 # okno glowne
 win = visual.Window(units="pix", color="white", fullscr=True)
@@ -100,10 +101,23 @@ def end():
     win.flip()
     core.wait(4)
 
+def hello_text():
+    f = codecs.open('C:/Users/Laptop/Desktop/Informatyka projekt/welcome.txt', encoding='utf-8')
+    text_file = f.read()
+    img = visual.TextStim(win, text=text_file, pos=(0.0, 0.0), color="black")
+    img.draw()
+    win.flip()
+    clicked = event.waitKeys(keyList=['space'])
+    if clicked == ["space"]:
+        core.wait(0)
+    img.draw()
+    win.flip()
+
 
 # wyswietlania 4 blokow plus przerwa, po ostatnim bloku - 'dziękujemy'
+hello_text()
 i = 4
-while i > 0: 
+while i > 0:
     for picturesSet in createBlock():
         displaySet(picturesSet)
     if i > 1:
