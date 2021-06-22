@@ -101,12 +101,16 @@ def end():
     core.wait(4)
 
 
-for i in range(0, 4):  # wyswietlania 4 blokow plus przerwa
+# wyswietlania 4 blokow plus przerwa, po ostatnim bloku - 'dziękujemy'
+i = 4
+while i > 0: 
     for picturesSet in createBlock():
         displaySet(picturesSet)
-    breake()
-
-end()
+    if i > 1:
+        breake()
+    else:
+        end()
+    i-=1
 
 win.flip()
 win.close()
