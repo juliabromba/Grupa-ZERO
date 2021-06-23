@@ -7,10 +7,12 @@ from pathlib import Path
 import codecs
 
 #tu powrzucajmy zmienne
-N_TRIALS_TRAIN = 1
-N_TRIALS_EXP = 4
-REACTION_KEYS = ['left', 'right']
-
+N_TRIALS_TRAIN = 2
+N_TRIALS_EXP = 2
+hello_info = 'C:/Users/Laptop/Desktop/Informatyka projekt/welcome.txt'
+breake_info = "Przerwa, aby przejść do następnego bloku naciśnij spacje"
+aft_train_info = "Koniec treningu, nacinij spację, żeby przejsć do zadania."
+end_info = "Koniec, dziękujemy za udział w badaniu"
 
 
 # okno glowne
@@ -92,52 +94,56 @@ def displaySet(picturesSet):  # wyswietlanie blokow
     prawy.draw()
     lewy.draw()
     win.flip()
-    core.wait(1)
+    core.wait(2)
 
+#Julia: to nie jestem do końca pewna, jak działa, ale przydaje się w show_text i pewnie przyda się przy reakcjach prawa/lewa
+def reactions(keys):
+    event.clearEvents()
+    key = event.waitKeys(keyList=keys)
+    return key[0]
 
+def show_text(win, info, wait_key=["space"]):
+    info.draw()
+    win.flip()
+    reactions(wait_key)
+   
+def hello_text():
+    text_file = codecs.open(hello_info, encoding='utf-8').read()
+    show_text(win, info = visual.TextStim(win, text=text_file, pos=(0.0, 0.0), color="black"))
+    
 def breake():
-    img = visual.TextStim(win, text='Przerwa, aby przejść do następnego bloku naciśnij spacje', pos=(0.0, 0.0),
-                          color="black")
-    img.draw()
-    win.flip()
-    clicked = event.waitKeys(keyList=['space'])
-    if clicked == ["space"]:
-        core.wait(0)
-    img.draw()
-    win.flip()
-
-
+    show_text(win, info = visual.TextStim(win, text= breake_info, pos=(0.0, 0.0), color="black"))
+    
+def after_training():
+    show_text(win, info = visual.TextStim(win, text= aft_train_info, pos=(0.0, 0.0), color="black"))
+    
 def end():
-    img = visual.TextStim(win, text='Koniec, dziękujemy za udział w badaniu', pos=(0.0, 0.0),
-                          color="black")
+    img = visual.TextStim(win, text= end_info, pos=(0.0, 0.0), color="black")
     img.draw()
     win.flip()
     core.wait(4)
 
-def hello_text():
-    f = codecs.open('C:/Users/Laptop/Desktop/Informatyka projekt/welcome.txt', encoding='utf-8')
-    text_file = f.read()
-    img = visual.TextStim(win, text=text_file, pos=(0.0, 0.0), color="black")
-    img.draw()
-    win.flip()
-    clicked = event.waitKeys(keyList=['space'])
-    if clicked == ["space"]:
-        core.wait(0)
-    img.draw()
-    win.flip()
 
+# model eksperymentu - dla 'exp=False' robi trening. jeśli trening ma więcej, niż 1 blok, to pomiędzy blokami robi przerwę, a po ostatnim mówi, że pora na eksperyment.
+# dla 'exp = True' robi eksperyment z przerwami i informacją o zakończeniu po ostatnim bloku.
+def part_of_exp(n_trials, exp):
+    for i in range (n_trials): 
+        for picturesSet in createBlock():
+            displaySet(picturesSet)
+        if exp == True:
+            if i < (N_TRIALS_EXP - 1):
+                breake()
+            else:
+                end()
+        else:
+            if i <(N_TRIALS_TRAIN - 1):
+                breake()
+            else:
+                after_training()
 
-# wyswietlania 4 blokow plus przerwa, po ostatnim bloku - 'dziękujemy'
 hello_text()
-i = N_TRIALS_EXP
-while i > 0:
-    for picturesSet in createBlock():
-        displaySet(picturesSet)
-    if i > 1:
-        breake()
-    else:
-        end()
-    i-=1
+part_of_exp(N_TRIALS_TRAIN, exp = False)
+part_of_exp(N_TRIALS_EXP, exp = True)
 
 win.flip()
 win.close()
