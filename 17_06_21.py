@@ -13,8 +13,8 @@ hello_info = 'C:/Users/Laptop/Desktop/Informatyka projekt/welcome.txt'
 breake_info = "Przerwa, aby przejść do następnego bloku naciśnij spacje"
 aft_train_info = "Koniec treningu, nacinij spację, żeby przejsć do zadania."
 end_info = "Koniec, dziękujemy za udział w badaniu"
-
-
+# do pliku z wynikami
+RESULTS = [["NR", "EXPERIMENT"]]
 # okno glowne
 win = visual.Window(units="pix", color="white", fullscr=True)
 
@@ -140,10 +140,16 @@ def part_of_exp(n_trials, exp):
                 breake()
             else:
                 after_training()
-
+        RESULTS.append([i+1, exp]) #dodaje wyniki do pliku wynikowego
+        
+        
 hello_text()
 part_of_exp(N_TRIALS_TRAIN, exp = False)
 part_of_exp(N_TRIALS_EXP, exp = True)
 
+#tworzy plik wynikowy
+with open("result.csv", "w", newline='') as f:
+    write = csv.writer(f)
+    write.writerows(RESULTS)
 win.flip()
 win.close()
