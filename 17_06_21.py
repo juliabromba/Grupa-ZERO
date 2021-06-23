@@ -6,6 +6,13 @@ from random import shuffle
 from pathlib import Path
 import codecs
 
+#tu powrzucajmy zmienne
+N_TRIALS_TRAIN = 1
+N_TRIALS_EXP = 4
+REACTION_KEYS = ['left', 'right']
+
+
+
 # okno glowne
 win = visual.Window(units="pix", color="white", fullscr=True)
 
@@ -14,6 +21,9 @@ happypath = "C:/Users/Laptop/Desktop/Informatyka projekt/happy"
 happy_pictures = list(os.listdir(happypath))
 angrypath = "C:/Users/Laptop/Desktop/Informatyka projekt/angry"
 angry_pictures = list(os.listdir(angrypath))
+
+#punkt fiksacji
+fix = visual.TextStim(win, text="+", color = "black", height=40)
 
 
 def happy_zgodny(happy_pictures):  # warunek happy zgodny, w srodku happy, po bokach happy
@@ -75,6 +85,9 @@ def displaySet(picturesSet):  # wyswietlanie blokow
     srodek = visual.ImageStim(win, image=trial1_center, pos=(0.0, 0.0), size=[300, 377], colorSpace='rgb')
     lewy = visual.ImageStim(win, image=trial1_left, pos=(-310.0, 0.0), size=[300, 377], colorSpace='rgb')
     prawy = visual.ImageStim(win, image=trial1_right, pos=(310.0, 0.0), size=[300, 377], colorSpace='rgb')
+    fix.draw()
+    win.flip()
+    core.wait(4)
     srodek.draw()
     prawy.draw()
     lewy.draw()
@@ -116,7 +129,7 @@ def hello_text():
 
 # wyswietlania 4 blokow plus przerwa, po ostatnim bloku - 'dziękujemy'
 hello_text()
-i = 4
+i = N_TRIALS_EXP
 while i > 0:
     for picturesSet in createBlock():
         displaySet(picturesSet)
