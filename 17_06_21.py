@@ -1,4 +1,4 @@
-from psychopy import visual, core, event
+from psychopy import visual, core, event, gui
 import random
 import csv
 import os, sys
@@ -14,7 +14,21 @@ breake_info = "Przerwa, aby przejść do następnego bloku naciśnij spacje"
 aft_train_info = "Koniec treningu, nacinij spację, żeby przejsć do zadania."
 end_info = "Koniec, dziękujemy za udział w badaniu"
 # do pliku z wynikami
-RESULTS = [["NR", "EXPERIMENT"]]
+RESULTS = [["NR", "ID", "Sex", "Age", "EXPERIMENT"]]
+
+# okno startowe w ktorym trzeba podac kilka danych, ID, plec, wiek, ale zeby to dzialalo ono musi byc w tym miejscu, przed oknem win
+def poop_up():
+    hello_dlg = gui.Dlg(title="Error")
+    hello_dlg.addField('ID:')
+    hello_dlg.addField('Sex:')
+    hello_dlg.addField('Age:')
+    hello_list = hello_dlg.show()
+    RESULTS.append(hello_list)
+    with open("result.csv", "w", newline='') as f:
+        write = csv.writer(f)
+        write.writerows(RESULTS)
+poop_up()
+
 # okno glowne
 win = visual.Window(units="pix", color="white", fullscr=True)
 
