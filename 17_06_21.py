@@ -18,8 +18,9 @@ RESULTS = list()
 RESULTS.append(["IDENTYFIKATOR", "Plec", "Wiek", "EXPERIMENT"])
 
 
+"""okno startowe w ktorym trzeba podac kilka danych, ID, plec, wiek, ono musi być na poczatku, bo 
+inaczej full screen win nam wszystko przysloni, podobno znany problem na forum"""
 
-# okno startowe w ktorym trzeba podac kilka danych, ID, plec, wiek, ono musi być na poczatku, bo inaczej full screen win nam wszystko przysloni
 def poop_up():
     info = {'IDENTYFIKATOR': '', u'P\u0141EC': ['M', "K"], 'WIEK': ''}
     hello_dlg = gui.DlgFromDict(dictionary=info, title='Grupa Zero')
@@ -100,8 +101,12 @@ def createBlock():  # tworzenie listy z osmioma warunkami, kazdy z 4 podwojnie n
     shuffle(block)
     return block
 
+""" funckja, ktora wyswietla jeden blok, pctureset to zmienna zadeklarowana przez nas, trial1_center to jakas
+zmienna i wskazanie sciezki do niej z listy pictureset (tej listy nie mamy w ogole w programie, uzywamy jej tylko tutaj,
+prawdziwe dane wskazemy pozniej w petli!, na koncu tworzymy 3 zmienne, do ktorej trafiaja nasze pliki i te zmienne sa 
+wyswietlane w oknie win"""
 
-def displaySet(picturesSet):  # wyswietlanie blokow
+def displaySet(picturesSet):
     trial1_center = os.path.abspath(picturesSet[1])
     trial1_left = os.path.abspath(picturesSet[0])
     trial1_right = os.path.abspath(picturesSet[2])
