@@ -5,6 +5,7 @@ import os, sys
 from random import shuffle
 from pathlib import Path
 import codecs
+import yaml
 
 # zmienne globalne
 N_TRIALS_TRAIN = 1
@@ -32,10 +33,12 @@ def poop_up():
 
 poop_up()
 
+# plik konfiguracyjny
+conf=yaml.load(open('config.yaml', encoding='utf-8'))
 # okno glowne
-win = visual.Window(units="pix", color="white", fullscr=True)
+win = visual.Window(units="pix", color=conf['BACKGROUND_COLOR'], fullscr=True)
 # punkt fiksacji
-fix = visual.TextStim(win, text="+", color="black", height=40)
+fix = visual.TextStim(win, text="+", color=conf['FIX_CROSS_COLOR'], height=40)
 
 # sciezki do plikow w dwoch folderach happy i angry na dysku
 happypath = "C:/Users/Laptop/Desktop/Informatyka projekt/happy"
@@ -116,7 +119,7 @@ def displaySet(picturesSet):
     prawy = visual.ImageStim(win, image=trial1_right, pos=(310.0, 0.0), size=[300, 377], colorSpace='rgb')
     fix.draw()
     win.flip()
-    core.wait(0.2)
+    core.wait(conf['FIX_CROSS_TIME'])
     srodek.draw()
     prawy.draw()
     lewy.draw()
