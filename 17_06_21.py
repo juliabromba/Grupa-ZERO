@@ -6,17 +6,20 @@ from random import shuffle
 from pathlib import Path
 import codecs
 
-#tu powrzucajmy zmienne
-N_TRIALS_TRAIN = 2
-N_TRIALS_EXP = 2
+# zmienne globalne
+N_TRIALS_TRAIN = 1
+N_TRIALS_EXP = 1
 hello_info = 'C:/Users/Laptop/Desktop/Informatyka projekt/welcome.txt'
-breake_info = "Przerwa, aby przejść do następnego bloku naciśnij spacje"
+breake_info = "Przerwa, aby przejść do następnego bloku naciśnij spacje."
 aft_train_info = "Koniec treningu, nacinij spację, żeby przejsć do zadania."
-end_info = "Koniec, dziękujemy za udział w badaniu"
-# do pliku z wynikami
-RESULTS = [["ID", "Sex", "Age", "EXPERIMENT"]]
+end_info = "Koniec, dziękujemy za udział w badaniu!"
+# lista z wynikami
+RESULTS = list()
+RESULTS.append(["IDENTYFIKATOR", "Plec", "Wiek", "EXPERIMENT"])
 
-# okno startowe w ktorym trzeba podac kilka danych, ID, plec, wiek, ono musi być na poczatku, bo inaczej full screen wszystko przysloni
+
+
+# okno startowe w ktorym trzeba podac kilka danych, ID, plec, wiek, ono musi być na poczatku, bo inaczej full screen win nam wszystko przysloni
 def poop_up():
     info = {'IDENTYFIKATOR': '', u'P\u0141EC': ['M', "K"], 'WIEK': ''}
     hello_dlg = gui.DlgFromDict(dictionary=info, title='Grupa Zero')
@@ -24,22 +27,28 @@ def poop_up():
         abort_with_error('Info dialog terminated.')
     list = [info['IDENTYFIKATOR'], info['PŁEC'], info['WIEK']]
     RESULTS.append(list)
-    with open("result.csv", "w", newline='') as f:
-        write = csv.writer(f)
-        write.writerows(RESULTS)
+
+
 poop_up()
 
 # okno glowne
 win = visual.Window(units="pix", color="white", fullscr=True)
-
-#punkt fiksacji
-fix = visual.TextStim(win, text="+", color = "black", height=40)
+# punkt fiksacji
+fix = visual.TextStim(win, text="+", color="black", height=40)
 
 # sciezki do plikow w dwoch folderach happy i angry na dysku
 happypath = "C:/Users/Laptop/Desktop/Informatyka projekt/happy"
 happy_pictures = list(os.listdir(happypath))
 angrypath = "C:/Users/Laptop/Desktop/Informatyka projekt/angry"
 angry_pictures = list(os.listdir(angrypath))
+
+
+# tworzy plik wynikowy
+def save_result():
+    with open("result.csv", "w", newline='', encoding='utf-8') as f:
+        write = csv.writer(f)
+        write.writerows(RESULTS)
+
 
 def happy_zgodny(happy_pictures):  # warunek happy zgodny, w srodku happy, po bokach happy
     shuffle(happy_pictures)
@@ -102,45 +111,54 @@ def displaySet(picturesSet):  # wyswietlanie blokow
     prawy = visual.ImageStim(win, image=trial1_right, pos=(310.0, 0.0), size=[300, 377], colorSpace='rgb')
     fix.draw()
     win.flip()
-    core.wait(4)
+    core.wait(0.2)
     srodek.draw()
     prawy.draw()
     lewy.draw()
     win.flip()
-    core.wait(2)
+    core.wait(0.2)
 
-#Julia: to nie jestem do końca pewna, jak działa, ale przydaje się w show_text i pewnie przyda się przy reakcjach prawa/lewa
+
+# Julia: to nie jestem do końca pewna, jak działa, ale przydaje się w show_text i pewnie przyda się przy reakcjach prawa/lewa
 def reactions(keys):
     event.clearEvents()
     key = event.waitKeys(keyList=keys)
     return key[0]
 
+
 def show_text(win, info, wait_key=["space"]):
     info.draw()
     win.flip()
     reactions(wait_key)
-   
+
+
 def hello_text():
     text_file = codecs.open(hello_info, encoding='utf-8').read()
-    show_text(win, info = visual.TextStim(win, text=text_file, pos=(0.0, 0.0), color="black"))
-    
+    show_text(win, info=visual.TextStim(win, text=text_file, pos=(0.0, 0.0), color="black"))
+
+
 def breake():
-    show_text(win, info = visual.TextStim(win, text= breake_info, pos=(0.0, 0.0), color="black"))
-    
+    show_text(win, info=visual.TextStim(win, text=breake_info, pos=(0.0, 0.0), color="black"))
+
+
 def after_training():
-    show_text(win, info = visual.TextStim(win, text= aft_train_info, pos=(0.0, 0.0), color="black"))
-    
+    show_text(win, info=visual.TextStim(win, text=aft_train_info, pos=(0.0, 0.0), color="black"))
+
+
 def end():
-    img = visual.TextStim(win, text= end_info, pos=(0.0, 0.0), color="black")
+    img = visual.TextStim(win, text=end_info, pos=(0.0, 0.0), color="black")
     img.draw()
     win.flip()
-    core.wait(4)
+    core.wait(1)
 
 
-# model eksperymentu - dla 'exp=False' robi trening. jeśli trening ma więcej, niż 1 blok, to pomiędzy blokami robi przerwę, a po ostatnim mówi, że pora na eksperyment.
-# dla 'exp = True' robi eksperyment z przerwami i informacją o zakończeniu po ostatnim bloku.
+"""model eksperymentu - dla 'exp=False' robi trening, jeśli trening ma więcej, niż 1 blok, to pomiędzy blokami 
+robi przerwę, a po ostatnim mówi, że pora na eksperyment dla 'exp = True' robi eksperyment z przerwami i informacją 
+o zakończeniu po ostatnim bloku"""
+
+
 def part_of_exp(n_trials, exp):
-    for i in range (n_trials): 
+    for i in range(n_trials):
         for picturesSet in createBlock():
             displaySet(picturesSet)
         if exp == True:
@@ -149,20 +167,17 @@ def part_of_exp(n_trials, exp):
             else:
                 end()
         else:
-            if i <(N_TRIALS_TRAIN - 1):
+            if i < (N_TRIALS_TRAIN - 1):
                 breake()
             else:
                 after_training()
-        RESULTS.append([i+1, exp]) #dodaje wyniki do pliku wynikowego
-        
-        
-hello_text()
-part_of_exp(N_TRIALS_TRAIN, exp = False)
-part_of_exp(N_TRIALS_EXP, exp = True)
+        RESULTS.append([i + 1, exp])  # dodaje wyniki do pliku wynikowego
 
-#tworzy plik wynikowy
-with open("result.csv", "w", newline='') as f:
-    write = csv.writer(f)
-    write.writerows(RESULTS)
+
+hello_text()
+part_of_exp(N_TRIALS_TRAIN, exp=False)
+part_of_exp(N_TRIALS_EXP, exp=True)
+save_result()
+
 win.flip()
 win.close()
