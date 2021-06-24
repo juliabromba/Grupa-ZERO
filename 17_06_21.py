@@ -14,16 +14,16 @@ breake_info = "Przerwa, aby przejść do następnego bloku naciśnij spacje"
 aft_train_info = "Koniec treningu, nacinij spację, żeby przejsć do zadania."
 end_info = "Koniec, dziękujemy za udział w badaniu"
 # do pliku z wynikami
-RESULTS = [["NR", "ID", "Sex", "Age", "EXPERIMENT"]]
+RESULTS = [["ID", "Sex", "Age", "EXPERIMENT"]]
 
-# okno startowe w ktorym trzeba podac kilka danych, ID, plec, wiek, ale zeby to dzialalo ono musi byc w tym miejscu, przed oknem win
+# okno startowe w ktorym trzeba podac kilka danych, ID, plec, wiek, ono musi być na poczatku, bo inaczej full screen wszystko przysloni
 def poop_up():
-    hello_dlg = gui.Dlg(title="Error")
-    hello_dlg.addField('ID:')
-    hello_dlg.addField('Sex:')
-    hello_dlg.addField('Age:')
-    hello_list = hello_dlg.show()
-    RESULTS.append(hello_list)
+    info = {'IDENTYFIKATOR': '', u'P\u0141EC': ['M', "K"], 'WIEK': ''}
+    hello_dlg = gui.DlgFromDict(dictionary=info, title='Grupa Zero')
+    if not hello_dlg.OK:
+        abort_with_error('Info dialog terminated.')
+    list = [info['IDENTYFIKATOR'], info['PŁEC'], info['WIEK']]
+    RESULTS.append(list)
     with open("result.csv", "w", newline='') as f:
         write = csv.writer(f)
         write.writerows(RESULTS)
@@ -32,15 +32,14 @@ poop_up()
 # okno glowne
 win = visual.Window(units="pix", color="white", fullscr=True)
 
+#punkt fiksacji
+fix = visual.TextStim(win, text="+", color = "black", height=40)
+
 # sciezki do plikow w dwoch folderach happy i angry na dysku
 happypath = "C:/Users/Laptop/Desktop/Informatyka projekt/happy"
 happy_pictures = list(os.listdir(happypath))
 angrypath = "C:/Users/Laptop/Desktop/Informatyka projekt/angry"
 angry_pictures = list(os.listdir(angrypath))
-
-#punkt fiksacji
-fix = visual.TextStim(win, text="+", color = "black", height=40)
-
 
 def happy_zgodny(happy_pictures):  # warunek happy zgodny, w srodku happy, po bokach happy
     shuffle(happy_pictures)
