@@ -16,10 +16,9 @@ breake_info = "Przerwa, aby przejść do następnego bloku naciśnij spacje."
 aft_train_info = "Koniec treningu, nacinij spację, żeby przejsć do zadania."
 end_info = "Koniec, dziękujemy za udział w badaniu!"
 # plik wynikowy
-RESULTS = list()
-RESULTS.append(["IDENTYFIKATOR", "Plec", "Wiek"])
+RESULTS = ["IDENTYFIKATOR", "Plec", "Wiek"]
 # lista z reakcja badanego na obrazki
-small_result = list()
+small_result = []
 
 """okno startowe w ktorym trzeba podac kilka danych, ID, plec, wiek, ono musi być na poczatku, bo 
 inaczej full screen win nam wszystko przysloni, podobno znany problem na forum"""
@@ -117,24 +116,31 @@ wyswietlane w oknie win"""
 
 def displaySet(picturesSet):
     win.callOnFlip(clock.reset)
-    reaction = event.getKeys(keyList=list(conf['REACTION_KEYS']), timeStamped=clock)
-
+    reaction = event.getKeys(keyList=list(conf['REACTION_KEYS']))
     trial1_center = os.path.abspath(picturesSet[1])
     trial1_left = os.path.abspath(picturesSet[0])
     trial1_right = os.path.abspath(picturesSet[2])
-
+    
+    if picturesSet[1] in happy_pictures:
+        key = ['left']
+    else:
+        key = ['right']
+    
     srodek = visual.ImageStim(win, image=trial1_center, pos=(0.0, 0.0), size=[300, 377], colorSpace='rgb')
     lewy = visual.ImageStim(win, image=trial1_left, pos=(-310.0, 0.0), size=[300, 377], colorSpace='rgb')
     prawy = visual.ImageStim(win, image=trial1_right, pos=(310.0, 0.0), size=[300, 377], colorSpace='rgb')
     fix.draw()
     win.flip()
-    core.wait(0.5)
+    core.wait(1)
     srodek.draw()
     prawy.draw()
     lewy.draw()
     win.flip()
-    core.wait(0.5)
-    small_result.append(reaction)
+    core.wait(1)
+    rt = clock.getTime()
+
+    acc = key == reaction
+    small_result.append([reaction, key, acc, rt-2])
 
 
 # Julia: to nie jestem do końca pewna, jak działa, ale przydaje się w show_text i pewnie przyda się przy reakcjach prawa/lewa
