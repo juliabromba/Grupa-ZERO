@@ -104,7 +104,6 @@ def createBlock():  # tworzenie listy z osmioma warunkami, kazdy z 4 podwojnie n
              happy_niezgodny(angry_pictures, happy_pictures),
              happy_niezgodny(angry_pictures, happy_pictures)]
     shuffle(block)
-    RESULTS.append(block)
     return block
 
 
