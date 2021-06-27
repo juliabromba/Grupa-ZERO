@@ -1,3 +1,3 @@
-Witaj! Na ekranie, pojawią się obrazy z twarzami, wyświetlone obok siebie. Skup się na twarzy centralnej. Naciśnij klawisz z lewą strzałką gdy twarz centralna jest smutna.
-Naścinij klawisz z prawą strzałką gdy twarz centralna jest wesoła.
+Witaj! Na ekranie, pojawią się obrazy z twarzami, wyświetlone obok siebie. Skup się na twarzy centralnej. Naciśnij klawisz z lewą strzałką gdy twarz centralna jest wesoła.
+Naścinij klawisz z prawą strzałką gdy twarz centralna jest smutna.
 Naciśnij spacje aby przejść do testu!
