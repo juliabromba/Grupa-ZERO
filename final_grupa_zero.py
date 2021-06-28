@@ -12,6 +12,7 @@ conf = yaml.safe_load(open('config.yaml', encoding='utf-8'))
 
 # zmienne globalne
 clock = core.Clock()
+#wszystko do zmiany w pliku konfiguracyjnym
 N_TRIALS_TRAIN = conf['N_BLOCKS_TRAIN']
 N_TRIALS_EXP = conf['N_BLOCKS_EXPERIMENT']
 hello_info = conf['HELLO_INFO']
