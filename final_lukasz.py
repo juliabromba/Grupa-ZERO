@@ -7,15 +7,20 @@ from pathlib import Path
 import codecs
 import yaml
 
+# plik konfiguracyjny
+conf = yaml.safe_load(open('config.yaml', encoding='utf-8'))
+
 # zmienne globalne
 clock = core.Clock()
-N_TRIALS_TRAIN = 1
-N_TRIALS_EXP = 2
-hello_info = 'C:/Users/Laptop/Desktop/Informatyka projekt/welcome.txt'
-breake_info = "Przerwa, aby przejść do następnego bloku naciśnij spacje."
-aft_train_info = "Koniec treningu, nacinij spację, żeby przejsć do zadania."
-end_info = "Koniec, dziękujemy za udział w badaniu!"
-# plik wynikowy
+N_TRIALS_TRAIN = conf['N_BLOCKS_TRAIN']
+N_TRIALS_EXP = conf['N_BLOCKS_EXPERIMENT']
+hello_info = conf['HELLO_INFO']
+breake_info = conf['BREAKE_INFO']
+aft_train_info = conf['AFTER_TRAIN_INFO']
+end_info = conf['END_INFO']
+FIX_TIME = conf['FIX_CROSS_TIME']
+TRIAL_TIME = conf['IMAGE_SET_TIME']
+# lista z wynikami
 RESULTS = []
 RESULTS.append(["IDENTYFIKATOR", "Plec", "Wiek"])
 
@@ -34,17 +39,15 @@ def poop_up():
 
 poop_up()
 
-# plik konfiguracyjny
-conf = yaml.safe_load(open('config.yaml', encoding='utf-8'))
 # okno glowne
 win = visual.Window(units="pix", color=conf['BACKGROUND_COLOR'], fullscr=True)
 # punkt fiksacji
 fix = visual.TextStim(win, text="+", color=conf['FIX_CROSS_COLOR'], height=40)
 
-# sciezki do plikow w dwoch folderach happy i angry na dysku
-happypath = "C:/Users/Laptop/Desktop/Informatyka projekt/happy"
+# listy ścieżek do plikow w dwoch folderach - happy i angry
+happypath = conf['HAPPY_FOLDER']
 happy_pictures = list(os.listdir(happypath))
-angrypath = "C:/Users/Laptop/Desktop/Informatyka projekt/angry"
+angrypath = conf['ANGRY_FOLDER']
 angry_pictures = list(os.listdir(angrypath))
 
 
@@ -92,8 +95,9 @@ def happy_niezgodny(angry_pictures, happy_pictures):  # warunek happy niezgodny,
     happy2 = [left, center, right]
     return happy2
 
-
-def createBlock():  # tworzenie listy z osmioma warunkami, kazdy z 4 podwojnie na koncu liste mieszamy
+# tworzenie listy z osmioma warunkami, kazdy z 4 podwojnie. Liste mieszamy, dodajemy nazwy plików zdjęciowych do wyników
+# i dodajemy nagłówki do wyników, które przyjdą z PicturesSet
+def createBlock():  
     block = [happy_zgodny(happy_pictures),
              happy_zgodny(happy_pictures),
              angry_zgodny(angry_pictures),
@@ -108,7 +112,7 @@ def createBlock():  # tworzenie listy z osmioma warunkami, kazdy z 4 podwojnie n
     return block
 
 
-""" funckja, ktora wyswietla jeden blok, pctureset to zmienna zadeklarowana przez nas, trial1_center to jakas
+""" funkcja, ktora wyswietla jeden blok, pctureset to zmienna zadeklarowana przez nas, trial1_center to jakas
 zmienna i wskazanie sciezki do niej z listy pictureset (tej listy nie mamy w ogole w programie, uzywamy jej tylko tutaj,
 prawdziwe dane wskazemy pozniej w petli!, na koncu tworzymy 3 zmienne, do ktorej trafiaja nasze pliki i te zmienne sa 
 wyswietlane w oknie win"""
@@ -120,30 +124,29 @@ def displaySet(picturesSet):
     trial1_left = os.path.abspath(picturesSet[0])
     trial1_right = os.path.abspath(picturesSet[2])
     
-    if picturesSet[1] in happy_pictures:
+    if picturesSet[1] in happy_pictures: #zdefiniowanie poprawnej 'reakcji' na trial
         key = ['left']
     else:
         key = ['right']
         
-    reaction = event.getKeys(keyList=list(conf['REACTION_KEYS']))
+    reaction = event.getKeys(keyList=list(conf['REACTION_KEYS'])) #zebranie reakcji badanego
     srodek = visual.ImageStim(win, image=trial1_center, pos=(0.0, 0.0), size=[300, 377], colorSpace='rgb')
     lewy = visual.ImageStim(win, image=trial1_left, pos=(-310.0, 0.0), size=[300, 377], colorSpace='rgb')
     prawy = visual.ImageStim(win, image=trial1_right, pos=(310.0, 0.0), size=[300, 377], colorSpace='rgb')
     fix.draw()
     win.flip()
-    core.wait(1)
+    core.wait(FIX_TIME)
     srodek.draw()
     prawy.draw()
     lewy.draw()
     win.flip()
-    core.wait(1)
-    rt = clock.getTime()
+    core.wait(TRIAL_TIME)
+    rt = clock.getTime() #czas reakcji z czasem core.waitów (do wyników dopisuje się pomniejszony o TRIAL i FIX_TIME)
 
-    acc = key == reaction
-    RESULTS.append([reaction, key, acc, rt-2])
+    acc = key == reaction #sprawdzenie poprawności reakcji
+    RESULTS.append([reaction, key, acc, rt-(TRIAL_TIME+FIX_TIME)]) #dopisanie do wyników
 
 
-# Julia: to nie jestem do końca pewna, jak działa, ale przydaje się w show_text i pewnie przyda się przy reakcjach prawa/lewa
 def reactions(keys):
     event.clearEvents()
     key = event.waitKeys(keyList=keys)
