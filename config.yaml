@@ -1,3 +1,13 @@
 BACKGROUND_COLOR: white
+HAPPY_FOLDER: "C:/Users/Julia/PycharmProjects/pythonProject/happy"
+ANGRY_FOLDER: "C:/Users/Julia/PycharmProjects/pythonProject/angry"
 FIX_CROSS_COLOR: black
-FIX_CROSS_TIME: 1
+FIX_CROSS_TIME: 2
+IMAGE_SET_TIME: 1
+REACTION_KEYS: [left, right]
+N_BLOCKS_TRAIN: 1
+N_BLOCKS_EXPERIMENT: 2
+HELLO_INFO: 'C:/Users/Julia/PycharmProjects/pythonProject/welcome.txt'
+BREAKE_INFO: "Przerwa, aby przejść do następnego bloku naciśnij spacje."
+AFTER_TRAIN_INFO: "Koniec treningu, nacinij spację, żeby przejsć do zadania."
+END_INFO: "Koniec, dziękujemy za udział w badaniu!"
