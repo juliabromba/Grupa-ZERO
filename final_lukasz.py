@@ -16,9 +16,8 @@ breake_info = "Przerwa, aby przejść do następnego bloku naciśnij spacje."
 aft_train_info = "Koniec treningu, nacinij spację, żeby przejsć do zadania."
 end_info = "Koniec, dziękujemy za udział w badaniu!"
 # plik wynikowy
-RESULTS = ["IDENTYFIKATOR", "Plec", "Wiek"]
-# lista z reakcja badanego na obrazki
-small_result = []
+RESULTS = []
+RESULTS.append(["IDENTYFIKATOR", "Plec", "Wiek"])
 
 """okno startowe w ktorym trzeba podac kilka danych, ID, plec, wiek, ono musi być na poczatku, bo 
 inaczej full screen win nam wszystko przysloni, podobno znany problem na forum"""
@@ -34,6 +33,7 @@ def poop_up():
 
 
 poop_up()
+RESULTS.append(["REACTION", "CONDITION", "ACC", "TIME"])
 
 # plik konfiguracyjny
 conf = yaml.safe_load(open('config.yaml', encoding='utf-8'))
@@ -115,7 +115,6 @@ wyswietlane w oknie win"""
 
 def displaySet(picturesSet):
     win.callOnFlip(clock.reset)
-    reaction = event.getKeys(keyList=list(conf['REACTION_KEYS']))
     trial1_center = os.path.abspath(picturesSet[1])
     trial1_left = os.path.abspath(picturesSet[0])
     trial1_right = os.path.abspath(picturesSet[2])
@@ -124,7 +123,8 @@ def displaySet(picturesSet):
         key = ['left']
     else:
         key = ['right']
-    
+        
+    reaction = event.getKeys(keyList=list(conf['REACTION_KEYS']))
     srodek = visual.ImageStim(win, image=trial1_center, pos=(0.0, 0.0), size=[300, 377], colorSpace='rgb')
     lewy = visual.ImageStim(win, image=trial1_left, pos=(-310.0, 0.0), size=[300, 377], colorSpace='rgb')
     prawy = visual.ImageStim(win, image=trial1_right, pos=(310.0, 0.0), size=[300, 377], colorSpace='rgb')
@@ -139,7 +139,7 @@ def displaySet(picturesSet):
     rt = clock.getTime()
 
     acc = key == reaction
-    small_result.append([reaction, key, acc, rt-2])
+    RESULTS.append([reaction, key, acc, rt-2])
 
 
 # Julia: to nie jestem do końca pewna, jak działa, ale przydaje się w show_text i pewnie przyda się przy reakcjach prawa/lewa
@@ -196,7 +196,7 @@ def part_of_exp(n_trials, exp):
                 breake()
             else:
                 after_training()
-        RESULTS.append([exp1, small_result])  # dodaje wyniki do pliku wynikowego
+        RESULTS.append([exp1])  # dodaje wyniki do pliku wynikowego
 
 
 hello_text()
