@@ -6,7 +6,7 @@ FIX_CROSS_TIME: 2
 IMAGE_SET_TIME: 1
 REACTION_KEYS: [left, right]
 N_BLOCKS_TRAIN: 1
-N_BLOCKS_EXPERIMENT: 2
+N_BLOCKS_EXPERIMENT: 5
 HELLO_INFO: 'C:/Users/Julia/PycharmProjects/pythonProject/welcome.txt'
 BREAKE_INFO: "Przerwa, aby przejść do następnego bloku naciśnij spacje."
 AFTER_TRAIN_INFO: "Koniec treningu, nacinij spację, żeby przejsć do zadania."
