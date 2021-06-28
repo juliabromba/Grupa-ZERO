@@ -24,9 +24,6 @@ TRIAL_TIME = conf['IMAGE_SET_TIME']
 RESULTS = []
 RESULTS.append(["IDENTYFIKATOR", "Plec", "Wiek"])
 
-def abort_with_error(err):
-    logging.critical(err)
-    raise Exception(err)
     
 """okno startowe w ktorym trzeba podac kilka danych, ID, plec, wiek, ono musi być na poczatku, bo 
 inaczej full screen win nam wszystko przysloni, podobno znany problem na forum"""
@@ -40,6 +37,9 @@ def poop_up():
     list = [info['IDENTYFIKATOR'], info['PŁEC'], info['WIEK']]
     RESULTS.append(list)
 
+def abort_with_error(err):
+    logging.critical(err)
+    raise Exception(err)
 
 poop_up()
 
