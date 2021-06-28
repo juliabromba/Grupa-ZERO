@@ -33,7 +33,6 @@ def poop_up():
 
 
 poop_up()
-RESULTS.append(["REACTION", "CONDITION", "ACC", "TIME"])
 
 # plik konfiguracyjny
 conf = yaml.safe_load(open('config.yaml', encoding='utf-8'))
@@ -104,6 +103,8 @@ def createBlock():  # tworzenie listy z osmioma warunkami, kazdy z 4 podwojnie n
              happy_niezgodny(angry_pictures, happy_pictures),
              happy_niezgodny(angry_pictures, happy_pictures)]
     shuffle(block)
+    RESULTS.append(block)
+    RESULTS.append(["REACTION", "CONDITION", "ACC", "TIME"])
     return block
 
 
